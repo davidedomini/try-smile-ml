@@ -1,3 +1,26 @@
-package it.unibo class RandomForest {
+package it.unibo
 
+import smile.classification._
+import smile.data.formula._
+import smile.plot._
+import smile.plot.swing._
+import smile.plot.Render.renderCanvas
+import smile.read
+import scala.language.postfixOps
+import java.nio.file.Path
+
+object RandomForest extends App {
+  val formula: Formula = "class" ~
+  val iris = read.arff(Path.of(getClass.getResource("/iris.arff").toURI))
+  val labels = formula.y(iris).toStringArray
+  val model = randomForest(formula, iris)
+  println(model.metrics())
+  println("####### Prediction #####")
+  println(labels(model.predict(iris.get(0))))
+  println("####### True value #####")
+  println(iris.getString(0, "class"))
+  val x = iris.select(0, 1).toArray
+  val y: Array[Int] = iris.column("class").toStringArray.map(labels.indexOf(_))
+  val result = plot(x, y, 'x')
+  show(result)
 }
