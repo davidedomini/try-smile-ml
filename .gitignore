@@ -4,3 +4,5 @@
 build/
 out/
 target/
+project/boot/
+project/plugins/project/
